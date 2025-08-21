@@ -14,6 +14,39 @@ else
   MONITORING_PRESENT=false
 fi
 
+# Ensure Docker daemon is running
+ensure_docker_running() {
+  if ! command -v docker >/dev/null 2>&1; then
+    echo "Docker CLI not found. Please install Docker Desktop (macOS) or Docker Engine (Linux)."
+    exit 1
+  fi
+
+  if docker info >/dev/null 2>&1; then
+    return 0
+  fi
+
+  echo "Docker is not running. Attempting to start..."
+  if [[ "$OSTYPE" == darwin* ]]; then
+    # macOS: start Docker Desktop
+    open -a Docker || true
+  else
+    # Linux: try to start the docker service
+    sudo systemctl start docker 2>/dev/null || sudo service docker start 2>/dev/null || true
+  fi
+
+  # Wait up to ~60s for Docker to be ready
+  for i in {1..60}; do
+    if docker info >/dev/null 2>&1; then
+      echo "Docker is running."
+      return 0
+    fi
+    sleep 1
+  done
+
+  echo "Docker did not become ready. Please start Docker and retry."
+  exit 1
+}
+
 # Ensure lockfiles are up-to-date before docker builds (avoids --frozen-lockfile errors)
 preinstall_if_needed() {
     local dir=$1
@@ -207,6 +240,9 @@ fi
 if [[ " ${SERVICES_TO_BUILD[*]} " =~ " frontend " ]] || [[ " ${SERVICES_TO_BUILD[*]} " =~ " all " ]]; then
     preinstall_if_needed "frontend"
 fi
+
+# Ensure Docker is running before any docker-compose commands
+ensure_docker_running
 
 BUILD_CMD="docker-compose up --build -d"
 

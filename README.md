@@ -3,10 +3,16 @@
 A modern full-stack blog application built with React (frontend), NestJS (backend), and PostgreSQL database. Features user authentication, blog creation/management, and a responsive UI with dark/light theme support.
 
 ## 📋 Prerequisites
+- Docker(20.10.22)   `docker -v`
+- Docker-compose(2.13.0)   `docker-compose -v`
+- Node.js(22.18.0)   `node -v`
+- Yarn(1.22.19)   `yarn -v`
 
-- **Docker** and **Docker Compose** installed
-- **Node.js** 18+ (for local development)
-- **Yarn** package manager
+### Use this script to check dependencies
+```
+./scripts/check-dependency.sh
+```
+
 
 ## 🚀 Quick Start
 
@@ -33,7 +39,7 @@ A modern full-stack blog application built with React (frontend), NestJS (backen
 
 1. **Start the database**
    ```bash
-   docker compose up postgres pgadmin -d
+   ./scripts/build.sh postgres
    ```
 
 2. **Backend setup**
