@@ -22,7 +22,7 @@ export class AuthService {
       where: { email: loginDto.email },
     });
 
-    console.log('Login attempt:', { email: loginDto.email, userFound: !!user, passwordMatch: user ? user.password === loginDto.password : false });
+    console.log('Login attempt:', { email: loginDto.email, userFound: !!user, passwordMatch: user ? await bcrypt.compare(loginDto.password, user.password) : false });
 
     if (!user || !(await bcrypt.compare(loginDto.password, user.password))) {
       console.log('Throwing UnauthorizedException');
