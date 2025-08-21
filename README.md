@@ -9,14 +9,13 @@ A modern full-stack blog application built with React (frontend), NestJS (backen
 - Yarn(1.22.19)   `yarn -v`
 
 ### Use this script to check dependencies
-```
-./scripts/check-dependency.sh
-```
+- `./scripts/check-dependency.sh`
+
 
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
+### Option 1: Docker (Recommended,only if docker installed)
 
 1. **Clone the repository**
    ```bash
@@ -35,12 +34,15 @@ A modern full-stack blog application built with React (frontend), NestJS (backen
    - API Documentation: http://localhost:8080/api
    - pgAdmin: http://localhost:5050 (admin@admin.com / admin)
 
-### Option 2: Local Development
+### Option 2: Local Development (FE depends on BE and BE depends on Database)
 
 1. **Start the database**
    ```bash
-   ./scripts/build.sh postgres
+   ./scripts/build.sh postgres pgadmin
    ```
+   http://localhost:5050/
+   Servers > PostGresSQL Database > Databases > test_db > test_db > Schemas > public > Tables > Right click on table and view all rows
+   password : password
 
 2. **Backend setup**
    ```bash
